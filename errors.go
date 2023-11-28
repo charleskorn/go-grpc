@@ -62,6 +62,8 @@ func SetSpanTags(span opentracing.Span, err error, client bool) {
 		code = s.Code()
 	} else if errors.Is(err, context.Canceled) {
 		code = codes.Canceled
+	}
+	if code == codes.Canceled {
 		err = nil // Someone else canceled this operation - we should not flag it as an error.
 	}
 	span.SetTag("response_code", code)
